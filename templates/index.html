@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>File Upload and Text Query</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #loading { color: red; }
+    </style>
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById("file-input");
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch("/uploadfile/", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            document.getElementById("upload-message").innerText = data.message;
+        }
+
+        async function submitText() {
+            document.getElementById("loading").innerText = "Generating response...";
+            const textValue = document.getElementById("text-input").value;
+            const response = await fetch("/text/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `text=${encodeURIComponent(textValue)}`,
+            });
+            const data = await response.json();
+            document.getElementById("text-output").innerText = `Response: ${data.text}`;
+            document.getElementById("loading").innerText = "";
+        }
+    </script>
+</head>
+<body>
+    <h1>Upload a file</h1>
+    <input type="file" id="file-input"><br><br>
+    <button onclick="uploadFile()">Upload</button>
+    <div id="upload-message"></div>
+
+    <h1>Enter your query</h1>
+    <input id="text-input" type="text"><br><br>
+    <button onclick="submitText()">Submit</button>
+    <h2>Output:</h2>
+    <div id="text-output"></div>
+    <div id="loading"></div>
+</body>
+</html>
+ 
