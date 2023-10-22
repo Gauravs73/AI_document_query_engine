@@ -1,0 +1,267 @@
+<html>
+
+<head>
+
+    <title>Query Engine</title>
+
+ 
+
+    <style>
+
+        /* General Styles */
+
+        body {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f4f4f4;
+
+        }
+
+   
+
+        /* Container */
+
+        .container {
+
+            border-radius: 8px;
+
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            padding: 20px;
+
+            background: #fff;
+
+        }
+
+   
+
+        /* Titles */
+
+        h1, h2 {
+
+            font-size: 24px;
+
+            margin-bottom: 15px;
+
+            color: #333;
+
+        }
+
+   
+
+        h2 {
+
+            font-size: 20px;
+
+        }
+
+   
+
+        /* File and Text Input */
+
+        input[type="file"], input[type="text"] {
+
+            padding: 12px;
+
+            width: 100%;
+
+            margin-bottom: 15px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 4px;
+
+        }
+
+   
+
+        /* Buttons */
+
+        button {
+
+            padding: 12px 20px;
+
+            border: none;
+
+            background-color: #007BFF;
+
+            color: white;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+        }
+
+   
+
+        button:hover {
+
+            background-color: #0056b3;
+
+        }
+
+   
+
+        /* Output and Loading Text */
+
+        #text-output, #loading {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 4px;
+
+        }
+
+   
+
+        /* Output Box */
+
+        #text-output {
+
+            min-height: 50px;
+
+        }
+
+   
+
+        /* Loading Text */
+
+        #loading {
+
+            display: none;
+
+        }
+
+   
+
+ 
+
+   
+
+        #loading-gif {
+
+            width: 30px;
+
+            height: 30px;
+
+          margin: auto;
+
+           
+
+        /* position: absolute; */
+
+   
+
+       
+
+        }
+
+    </style>  
+
+</head>
+
+<body>
+
+    <div class="container">
+
+ 
+    <h1>Enter your query</h1>
+
+    <form id="query-form">
+
+        <input id="text-input" type="text"><br><br>
+
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <img id="loading-gif" src="https://cdn.pixabay.com/animation/2022/11/04/09/42/09-42-03-510_512.gif" style="display: none;" />
+
+    <h2>Output:</h2>
+
+    <div id="text-output"></div>
+
+</div>
+
+    <!-- <div id="loading"></div> -->
+
+    <!-- ...JavaScript code... -->
+
+    <script>
+
+        // Add an event listener to the form
+
+        document.getElementById("query-form").addEventListener("submit", async function(e) {
+
+            e.preventDefault(); // Prevent the default form submission
+
+            await submitText();
+
+        });
+
+   
+
+
+        async function submitText() {
+
+            // document.getElementById("loading").innerText = "Generating response...";
+
+            document.getElementById("loading-gif").style.display = "block";  
+
+            const textValue = document.getElementById("text-input").value;
+
+           
+
+            const response = await fetch("/text/", {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type": "application/x-www-form-urlencoded",
+
+                },
+
+                body: `text=${encodeURIComponent(textValue)}`,
+
+            });
+
+           
+
+            const data = await response.json();
+
+            // document.getElementById("text-output").innerText = `Response: ${data.text}`;
+
+            // document.getElementById("loading").innerText = "";
+
+            document.getElementById("loading-gif").style.display = "none";
+
+            document.getElementById("text-output").innerText = `Response: ${data.text}`;
+
+        }
+
+    </script>
+
+   
+
+</body>
+
+</html>
