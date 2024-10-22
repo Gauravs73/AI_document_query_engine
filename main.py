@@ -1,5 +1,4 @@
 
-import config
 import os
 from fastapi import FastAPI
 from fastapi import UploadFile, File, Form
