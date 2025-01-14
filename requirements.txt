@@ -1,3 +1,2 @@
 fastapi
-shutil
 llama_index
